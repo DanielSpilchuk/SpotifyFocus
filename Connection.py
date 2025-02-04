@@ -12,13 +12,9 @@ sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=SPOTIPY_CLIENT_ID,
 
 # base information to be changed in the future
 device_id = None
-volume_percent = 80
-
-
-#context_uri="spotify:playlist:3qu09J0oigKWBhPWoRJsjs"
+volume_percent = 100
 search_return = sp.search("peeing in a pool while it rains", limit=1, type='playlist')
-json_parse = json.loads(search_return)
-context_uri = json_parse['playlists']['items']['uri']
+context_uri = search_return['playlists']['items'][0]['uri']
 
 # search # searches for an item playlist(playlist_id, fields=None, market=None, additional_types=('track',))
 
