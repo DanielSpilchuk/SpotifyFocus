@@ -10,14 +10,22 @@ sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=SPOTIPY_CLIENT_ID,
 
 #https://api.spotify.com/v1/me/player/devices get request to find all
 
-if len(sp.devices()) == 0:
+# error handling for no active device player
+if len(sp.devices()['devices']) == 0:
     print('No Active Device Running Spotify! Please listen to music and try again.')
-    exit
+    sys.exit()
 
 # base information to be changed in the future
 device_id = None
 volume_percent = 100
 search_return = sp.search(sys.argv[0], limit=1, type='playlist') # playlist for the user to search for
+
+print(sys.argv[0]) # figure out how to make this smoother
+
+if search_return['playlists']['items'][0] == None:
+    print('Requested playlist yielded no results.')
+    sys.exit()
+
 context_uri = search_return['playlists']['items'][0]['uri']
 
 print('Changing Volume..')
