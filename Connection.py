@@ -1,5 +1,5 @@
+import sys
 import spotipy
-import json
 from spotipy.oauth2 import SpotifyOAuth
 from Credentials import *
 
@@ -10,25 +10,15 @@ sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=SPOTIPY_CLIENT_ID,
 
 #https://api.spotify.com/v1/me/player/devices get request to find all
 
+if len(sp.devices()) == 0:
+    print('No Active Device Running Spotify! Please listen to music and try again.')
+    exit
+
 # base information to be changed in the future
 device_id = None
 volume_percent = 100
-search_return = sp.search("peeing in a pool while it rains", limit=1, type='playlist')
+search_return = sp.search(sys.argv[0], limit=1, type='playlist') # playlist for the user to search for
 context_uri = search_return['playlists']['items'][0]['uri']
-
-# search # searches for an item playlist(playlist_id, fields=None, market=None, additional_types=('track',))
-
-print('INTRO')
-print(sp.devices()) # how to do this more specifically
-print(context_uri)
-
-# Basic Features/Goals
-# Get User Inputs for Key and Playlist
-# Play Playlist on Key Press (unless already playing?)
-
-# METHODS
-#print(sp.currently_playing()) # users currently playing track
-#print(sp.current_playback()) # get information about current users currently playing track
 
 print('Changing Volume..')
 sp.volume(volume_percent, device_id)
