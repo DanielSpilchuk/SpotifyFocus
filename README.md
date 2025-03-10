@@ -1,8 +1,11 @@
 # SpotifyFocus
 
 Current State of Application - Development
+
 User Level of Completion - Success on Local, Untested External Users
+
 Active Development - Lock Spotify Until Loaded, Change Only on Hotkey Program Device
+
 
 
 TODO
