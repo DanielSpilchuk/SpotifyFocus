@@ -27,23 +27,19 @@ import time
 #window.location.href = authUrl.toString();
 
 def activateSpotifyPlayer():
-    import pyautogui
-
     # pip install pyautogui
     # pip install pygetwindow
     # assist in development????
+    import pyautogui
 
     # retrieve spotify window by title, activate, then press space
     window = gw.getWindowsWithTitle("Spotify Premium") 
     try:
-        # test code simplification
-        #win = window[0]
-        #win.activate()
         window[0].activate() 
         pyautogui.press("space")
-        time.sleep(3)
     except:
         print("Window not found!")
+
 
 
 # find the issue of user key storage, how to request and recieve
@@ -72,36 +68,38 @@ if len(sp.devices()['devices']) == 0:
     except:
         webbrowser.open("https://open.spotify.com/")
 
-    time.sleep(8)
     # pausing program until program opened
-    #while not any("Spotify Premium" in title for title in gw.getAllTitles()):
-        #time.sleep(0.25)
+    while not len(sp.devices()['devices']) > 0:
+        time.sleep(0.25)    
     
 # error handling for no active spotify devices
 if len(sp.devices()['devices']) > 0:
- 
-    # sometimes it thinks something is playing when nothing is???
-    # ah it can sense my smartwatch, can't believe tech these days
-    #['name': 'SM-R940', 
-    # 'supports_volume': False, 
-    # 'type': 'Smartwatch', 
-    # 'volume_percent': 100}]
-    #print(spotifyDevices)
+
+    # device variables to potentially sort by. THIS MEANS YOU CAN USE THIS TO CHANGE PHONE/SMARTWATCH PLAYBACK
+    # 'is_active': True, 
+    # 'is_private_session': False, 
+    # 'is_restricted': False, 
+    # 'name': 'DeviceName', 
+    # 'supports_volume': True, 
+    # 'type': 'Computer', 
+    # 'volume_percent': 100  # spotify's percentage, not device percentage
 
     # as long as one device is active then we can run playback
-    anyDevicesActive = any(i['is_active'] for i in sp.devices()['devices'])
+    anyDevicesActive = any(i['is_active'] and i['type'] == 'Computer' for i in sp.devices()['devices'])
 
     # if devices aren't active then activate the opened player   
     if not anyDevicesActive:
         print('No Active Devices Running Spotify! Attempting to activate it for you.')
         activateSpotifyPlayer()
-        time.sleep(0.5)
 
+    # wait until activation is available on the system side
+    while not any(i['is_active'] for i in sp.devices()['devices']):
+        time.sleep(0.25)
 
 # base information to be changed in the future
 device_id = None
 volume_percent = 100
-search_string = 'Tortured Poets Department'
+search_string = 'Cowboy Saloon Music'
 search_type = 'album'
 
 #search_return = sp.search(sys.argv[0], limit=1, type='playlist') # playlist for the user to search for
@@ -123,11 +121,6 @@ print('Changing Volume..')
 # don't change volume if device blocks functionality
 if sp.devices()['devices'][0]['supports_volume']:
     sp.volume(volume_percent, device_id)
-
-#except:
-#    activateSpotifyPlayer()
-#    time.sleep(3)
-#    sp.volume(volume_percent, device_id)
 
 # starting playback based on searched field
 print('Starting Playback..')
