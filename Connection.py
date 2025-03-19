@@ -1,12 +1,11 @@
-import os
-import sys
-import pygetwindow as gw # used for autoplay and ensuring program paused
-import spotipy    
-from dotenv import load_dotenv
-from spotipy.oauth2 import SpotifyOAuth
-
-# if web solution used -------------------------------
-import webbrowser
+from dotenv import load_dotenv          # environment variables
+import os                               # cont.
+import spotipy                          # general spotify functions
+from spotipy.oauth2 import SpotifyOAuth # spotify authorization
+import sys                              # opening spotify on windows machines
+import webbrowser                       # for websolution backup
+import pygetwindow as gw                # find spotify window
+import pyautogui                        #  and click window to begin activation
 import time
 # ----------------------------------------------------
 
@@ -26,40 +25,9 @@ import time
 #authUrl.search = new URLSearchParams(params).toString();
 #window.location.href = authUrl.toString();
 
-def activateSpotifyPlayer():
-    # pip install pyautogui
-    # pip install pygetwindow
-    # assist in development????
-    import pyautogui
 
-    # retrieve spotify window by title, activate, then press space
-    window = gw.getWindowsWithTitle("Spotify Premium") 
-    try:
-        window[0].activate() 
-        pyautogui.press("space")
-    except:
-        print("Window not found!")
-
-
-
-# find the issue of user key storage, how to request and recieve
-load_dotenv()
-SPOTIPY_CLIENT_ID = os.getenv("SPOTIPY_CLIENT_ID")
-SPOTIPY_CLIENT_SECRET = os.getenv("SPOTIPY_CLIENT_SECRET")
-SPOTIPY_REDIRECT_URI = os.getenv("SPOTIPY_REDIRECT_URI")
-
-sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=SPOTIPY_CLIENT_ID,
-                                               client_secret=SPOTIPY_CLIENT_SECRET,
-                                               redirect_uri=SPOTIPY_REDIRECT_URI,
-                                               scope="user-read-playback-state,user-modify-playback-state"))
-
-#https://api.spotify.com/v1/me/player/devices get request to find all
-
-
-# attempt to open spotify programmatically on local machine if no devices are available
-if len(sp.devices()['devices']) == 0:
-    print('No Devices With Spotify Open! Attempting to open it for you.')
-
+# open spotify player if none are available
+def openSpotifyPlayer():
     # application solution. confirmed solution on windows machines.
     try:
         os.system("spotify")
@@ -71,6 +39,37 @@ if len(sp.devices()['devices']) == 0:
     # pausing program until program opened
     while not len(sp.devices()['devices']) > 0:
         time.sleep(0.25)    
+
+
+# retrieve spotify window by title, activate, then press space
+def activateSpotifyPlayer():
+    window = gw.getWindowsWithTitle("Spotify Premium") 
+    while len(window) == 0:
+        time.sleep(0.25)
+        window = gw.getWindowsWithTitle("Spotify Premium") 
+
+    try:
+        window[0].activate() 
+        pyautogui.press("space")
+    except:
+        print("Window still not found!")
+
+
+
+# find the issue of user key storage, how to request and recieve
+load_dotenv()
+SPOTIPY_CLIENT_ID = os.getenv("SPOTIPY_CLIENT_ID")
+SPOTIPY_CLIENT_SECRET = os.getenv("SPOTIPY_CLIENT_SECRET")
+
+sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=SPOTIPY_CLIENT_ID,
+                                               client_secret=SPOTIPY_CLIENT_SECRET,
+                                               scope="user-read-playback-state,user-modify-playback-state"))
+
+
+# attempt to open spotify programmatically on local machine if no devices (computer only) are available
+if not any(i['type'] == 'Computer' for i in sp.devices()['devices']):
+    print('No Computers With Spotify Open! Attempting to open it for you.')
+    openSpotifyPlayer()
     
 # error handling for no active spotify devices
 if len(sp.devices()['devices']) > 0:
