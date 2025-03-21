@@ -55,7 +55,6 @@ def activateSpotifyPlayer():
         print("Window still not found!")
 
 
-
 # find the issue of user key storage, how to request and recieve
 load_dotenv()
 SPOTIPY_CLIENT_ID = os.getenv("SPOTIPY_CLIENT_ID")
@@ -73,15 +72,6 @@ if not any(i['type'] == 'Computer' for i in sp.devices()['devices']):
     
 # error handling for no active spotify devices
 if len(sp.devices()['devices']) > 0:
-
-    # device variables to potentially sort by. THIS MEANS YOU CAN USE THIS TO CHANGE PHONE/SMARTWATCH PLAYBACK
-    # 'is_active': True, 
-    # 'is_private_session': False, 
-    # 'is_restricted': False, 
-    # 'name': 'DeviceName', 
-    # 'supports_volume': True, 
-    # 'type': 'Computer', 
-    # 'volume_percent': 100  # spotify's percentage, not device percentage
 
     # as long as one device is active then we can run playback
     anyDevicesActive = any(i['is_active'] and i['type'] == 'Computer' for i in sp.devices()['devices'])
@@ -107,18 +97,15 @@ search_return = sp.search(search_string, limit=1, type=search_type)
 #print("Argument sys: " + sys.argv[0]) # figure out how to make this smoother
 #print(search_return)
 
+# search type addition allows for different types
 if search_return[search_type+'s']['items'][0] == None:
     print('Requested playlist yielded no results.')
     sys.exit()
 
 
-# volume modification
-print('Changing Volume..')
-#try:
-
-# TODO: block on user preference smartphone connectivity
-# don't change volume if device blocks functionality
+# volume modification- don't change volume if device blocks functionality
 if sp.devices()['devices'][0]['supports_volume']:
+    print('Changing Volume..')
     sp.volume(volume_percent, device_id)
 
 # starting playback based on searched field
