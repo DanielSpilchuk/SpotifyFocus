@@ -1,43 +1,15 @@
 # SpotifyFocus
 
 Current State of Application - Development
-
 User Level of Completion - Success on Local, Untested External Users
+Active Development - Create Executable for Users to Run, Change Only on Hotkey Program Device
 
-Active Development - Lock Spotify Until Loaded, Change Only on Hotkey Program Device
+This Document is to be Actively Changed During Development
 
-
-
-TODO
-
-    Add documentation so they can get their own key. Make code pull key from config json file athat they can put in there.
-    That way they are only modifying the config.
-
-    Use server for access?
-
-    Add dev mode on code and create mock API response. When activated my code will pull API data out of json.
-
-
-THIS IS TO BE CHANGED DURING DEVELOPMENT
-
-
-For Users
-You can configure your system or your code editor to run a Python program when you press F7. Here’s how to do it depending on your setup:
-    *can we avoid having users having to install python?
-
-
-Using Windows Batch Files
-    Create a batch file (run_python.bat):
-
-'
-@echo off
-python "C:\path\to\your_script.py"
-'
+For Users (Development Occuring for Executable Option)
+    - You can configure your system or your code editor to run a Python program when you press F7. Here’s how to do it depending on your setup:
 
 Step 1: Create a Batch File
-
-    TODO: provide base template for a user to download
-
     Open Notepad (or any text editor).
 
     Paste the following code (replace "C:\path\to\your_script.py" with the actual path of your Python file):
@@ -51,10 +23,9 @@ Step 1: Create a Batch File
     Save the file as run_python.bat (make sure it’s saved as .bat and not .txt).
 
 
+Step 2
 
-Use AutoHotkey to bind F7 to run the script:
-
-    TODO: provide base template
+Option 1: Use AutoHotkey to bind F7 to run the script:
 
     Install AutoHotkey.
     Create a .ahk script:
@@ -75,7 +46,6 @@ If you prefer not to use AutoHotkey:
         Click Apply and OK.
 
 Now when you press F7, your Python script will run!
-
 
 
 For Developers
