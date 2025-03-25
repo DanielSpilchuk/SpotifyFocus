@@ -1,10 +1,14 @@
 # SpotifyFocus
 
 Current State of Application - Development
+
 User Level of Completion - Success on Local, Untested External Users
+
 Active Development - Create Executable for Users to Run, Change Only on Hotkey Program Device
 
+
 This Document is to be Actively Changed During Development
+
 
 For Users (Development Occuring for Executable Option)
     - You can configure your system or your code editor to run a Python program when you press F7. Here’s how to do it depending on your setup:
