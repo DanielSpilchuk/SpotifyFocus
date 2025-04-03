@@ -9,6 +9,10 @@ import pyautogui                        #  and click window to begin activation
 import time
 # ----------------------------------------------------
 
+# create executable file
+#python -m PyInstaller Connection.py
+
+
 # New rough authorization?? Different language snippet
 #authUrl = new URL("https://accounts.spotify.com/authorize")
 # generated in the previous step
@@ -57,11 +61,12 @@ def activateSpotifyPlayer():
 
 # find the issue of user key storage, how to request and recieve
 load_dotenv()
-SPOTIPY_CLIENT_ID = os.getenv("SPOTIPY_CLIENT_ID")
+SPOTIPY_CLIENT_ID = os.getenv("SPOTIPY_CLIENT_ID") # --runtime-hook RUNTIME_HOOKS (is this a solution?)
 SPOTIPY_CLIENT_SECRET = os.getenv("SPOTIPY_CLIENT_SECRET")
 
 sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=SPOTIPY_CLIENT_ID,
                                                client_secret=SPOTIPY_CLIENT_SECRET,
+                                               redirect_uri='localhost',
                                                scope="user-read-playback-state,user-modify-playback-state"))
 
 
@@ -88,7 +93,7 @@ if len(sp.devices()['devices']) > 0:
 # base information to be changed in the future
 device_id = None
 volume_percent = 100
-search_string = 'Cowboy Saloon Music'
+search_string = 'Cowboy Saloon Music'  # --python-option PYTHON_OPTION able to use command line arguments. HOW TO USER CONTROL
 search_type = 'album'
 
 #search_return = sp.search(sys.argv[0], limit=1, type='playlist') # playlist for the user to search for
