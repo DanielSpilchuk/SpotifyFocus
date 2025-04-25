@@ -66,7 +66,7 @@ SPOTIPY_CLIENT_SECRET = os.getenv("SPOTIPY_CLIENT_SECRET")
 
 sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=SPOTIPY_CLIENT_ID,
                                                client_secret=SPOTIPY_CLIENT_SECRET,
-                                               redirect_uri='localhost',
+                                               redirect_uri='http://localhost:8080',
                                                scope="user-read-playback-state,user-modify-playback-state"))
 
 
@@ -93,14 +93,11 @@ if len(sp.devices()['devices']) > 0:
 # base information to be changed in the future
 device_id = None
 volume_percent = 100
-search_string = 'Cowboy Saloon Music'  # --python-option PYTHON_OPTION able to use command line arguments. HOW TO USER CONTROL
-search_type = 'album'
+search_string = sys.argv[1]  # HOW TO USER CONTROL both search string and type
+search_type = sys.argv[2]
 
-#search_return = sp.search(sys.argv[0], limit=1, type='playlist') # playlist for the user to search for
+# use the system arguments to return a search
 search_return = sp.search(search_string, limit=1, type=search_type)
-
-#print("Argument sys: " + sys.argv[0]) # figure out how to make this smoother
-#print(search_return)
 
 # search type addition allows for different types
 if search_return[search_type+'s']['items'][0] == None:
