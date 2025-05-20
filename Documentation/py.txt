@@ -1,0 +1,4 @@
+@echo off
+python3 "C:\Users\spilchud\SpotifyFocus\Connection.py" "Classical Piano"
+pause
+exit
